@@ -46,9 +46,10 @@ export default class Game extends React.Component {
       const desc = move ?
         'Go to move #' + move :
         'Go to game start';
+      const disabled = this.state.stepNumber === move;
       return(
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button onClick={() => this.jumpTo(move)} disabled={disabled}>{desc}</button>
         </li>
       );
     });
