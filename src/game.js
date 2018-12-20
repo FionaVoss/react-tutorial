@@ -50,11 +50,12 @@ export default class Game extends React.Component {
 
       const position = move ? getPosition(step.squares, history[move - 1].squares) : null;
       const coordinates = move ? coordinateString(position) : "";
+      const coordinateClass = this.state.stepNumber === move ? "bold" : "";
 
       return(
         <li key={move}>
           <button onClick={() => this.jumpTo(move)} disabled={disabled}>{desc}</button>
-          {coordinates}
+          <span className={coordinateClass}>{coordinates}</span>
         </li>
       );
     });
