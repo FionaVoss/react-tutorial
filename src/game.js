@@ -39,17 +39,21 @@ export default class Game extends React.Component {
     })
   }
 
+  statusMessage(winner) {
+    if (winner) {
+      return "Winner: " + winner;
+    } else if (this.state.stepNumber > 8) {
+      return "It's a tie!"
+    } else {
+      return 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
-    let status;
-    if (winner) {
-      status = "Winner: " + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
+    const status = this.statusMessage(winner);
 
     return (
       <div className="game">
