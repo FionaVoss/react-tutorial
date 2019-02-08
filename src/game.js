@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './board.js';
+import MoveList from './MoveList.js';
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ export default class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
-    }
+    };
+    this.jumpTo = this.jumpTo.bind(this);
   }
 
   handleClick(i) {
@@ -42,24 +44,6 @@ export default class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
-      const disabled = this.state.stepNumber === move;
-
-      const position = move ? getPosition(step.squares, history[move - 1].squares) : null;
-      const coordinates = move ? coordinateString(position) : "";
-      const coordinateClass = this.state.stepNumber === move ? "bold" : "";
-
-      return(
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)} disabled={disabled}>{desc}</button>
-          <span className={coordinateClass}>{coordinates}</span>
-        </li>
-      );
-    });
-
     let status;
     if (winner) {
       status = "Winner: " + winner;
@@ -77,7 +61,7 @@ export default class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <MoveList history={history} stepNumber={this.state.stepNumber} jumpTo={this.jumpTo} />
         </div>
       </div>
     );
@@ -102,18 +86,4 @@ function calculateWinner(squares) {
     }
   }
   return null;
-}
-
-function coordinateString(position) {
-  const column = Math.floor(position / 3) + 1;
-  const row = (position) % 3 + 1;
-  return "(" + column + ", " + row + ")";
-}
-
-function getPosition(currentSquares, previousSquares) {
-  for (let i = 0; i < currentSquares.length; i++) {
-    if (currentSquares[i] !== previousSquares[i]) {
-      return i;
-    }
-  }
 }
