@@ -6,6 +6,7 @@ export default class Board extends React.Component {
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        isWinner={this.props.winningSquares && this.props.winningSquares.includes(i)}
       />
     );
   }
@@ -35,7 +36,10 @@ export default class Board extends React.Component {
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button
+        className={props.isWinner ? "square winning-square" : "square"}
+        onClick={props.onClick}
+    >
       {props.value}
     </button>
   );
